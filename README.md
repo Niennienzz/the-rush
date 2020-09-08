@@ -30,7 +30,7 @@ If Docker is not available, the backend can also be started manually with the fo
 
 - Requirements:
     - [Go v1.14+](https://golang.org/)
-    - [Redis v6.0+](https://redis.io/)
+    - [Redis v6.0.7+](https://redis.io/)
     - [GNU Make v3.81+](https://www.gnu.org/software/make/)
 - Since Go v1.14+ is required, `go mod` is used by default. Otherwise, `$GOPATH` should be appropriately configured.
 - Make sure a local Redis server is running, default to `localhost:6379` with no password.
