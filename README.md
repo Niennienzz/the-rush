@@ -4,8 +4,8 @@ A simple GraphQL server for NFL players data.
 
 ## Installation & Running
 
-- After running the backend successfully, go to `http://localhost:8080/playground` for the GraphQL playground.
-- After running the web UI successfully, go to `http://localhost:3000` for the application page.
+- After starting the backend, go to `http://localhost:8080/playground` for the GraphQL playground.
+- After starting the web UI, go to `http://localhost:3000` for the application page.
 
 ### Backend - Run with Docker
 
