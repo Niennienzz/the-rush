@@ -1,0 +1,129 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query {
+    player(id: ID!): Player
+    players(args: PlayersArgs!): PlayersResponse!
+}
+
+type Mutation {
+    createPlayer(playerInput: PlayerInput!): Player!
+}
+
+scalar Time
+
+enum Order {
+    ASC
+    DESC
+}
+
+enum PlayersArgsOrderBy {
+    CREATED_AT
+    LONGEST_RUSH
+    TOTAL_RUSHING_TOUCHDOWNS
+    TOTAL_RUSHING_YARDS
+}
+
+input PlayersArgsOrder {
+    orderBy: PlayersArgsOrderBy!
+    order: Order!
+}
+
+input Page {
+    offset: Int!
+    limit: Int!
+}
+
+input PlayersArgs {
+    name: String
+    order: PlayersArgsOrder
+    page: Page
+}
+
+type PlayersResponse {
+    players: [Player!]!
+    total: Int!
+    offset: Int!
+    limit: Int!
+}
+
+enum Position {
+    QB  # Quarterback
+    RB  # Running Back
+    FB  # Fullback
+    WR  # Wide Receiver
+    TE  # Tight End
+    OL  # Offensive Lineman
+    C   # Center
+    G   # Guard
+    LG  # Left Guard
+    RG  # Right Guard
+    T   # Tackle
+    LT  # Left Tackle
+    RT  # Right Tackle
+    K   # Kicker
+    KR  # Kick Returner
+    DL  # Defensive Lineman
+    DE  # Defensive End
+    DT  # Defensive Tackle
+    NT  # Nose Tackle
+    LB  # Linebacker
+    ILB # Inside Linebacker
+    OLB # Outside Linebacker
+    MLB # Middle Linebacker
+    DB  # Defensive Back
+    CB  # Cornerback
+    FS  # Free Safety
+    SS  # Strong Safety
+    S   # Safety
+    P   # Punter
+    PR  # Punt Returner
+}
+
+input PlayerInput {
+    name: String! @goField(name: "Name")
+    team: String! @goField(name: "Team")
+    position: Position! @goField(name: "Position")
+    rushingAttempts: Int! @goField(name: "RushingAttempts")
+    rushingAttemptsPerGameAverage: Float! @goField(name: "RushingAttemptsPerGameAverage")
+    totalRushingYards: Int! @goField(name: "TotalRushingYards")
+    rushingAverageYardsPerAttempt: Float! @goField(name: "RushingAverageYardsPerAttempt")
+    rushingYardsPerGame: Float! @goField(name: "RushingYardsPerGame")
+    totalRushingTouchdowns: Int! @goField(name: "TotalRushingTouchdowns")
+    longestRush: String! @goField(name: "LongestRush") # A 'T' represents a touchdown occurred.
+    rushingFirstDowns: Int! @goField(name: "RushingFirstDowns")
+    rushingFirstDownsPercentage: Float! @goField(name: "RushingFirstDownsPercentage")
+    rushing20PlusYardsEach: Int! @goField(name: "Rushing20PlusYardsEach")
+    rushing40PlusYardsEach: Int! @goField(name: "Rushing40PlusYardsEach")
+    rushingFumbles: Int! @goField(name: "RushingFumbles")
+}
+
+type Player {
+    id: ID!
+    createdAt: Time!
+    name: String!
+    team: String!
+    position: Position!
+    rushingAttempts: Int!
+    rushingAttemptsPerGameAverage: Float!
+    totalRushingYards: Int!
+    rushingAverageYardsPerAttempt: Float!
+    rushingYardsPerGame: Float!
+    totalRushingTouchdowns: Int!
+    longestRush: LongestRush!
+    rushingFirstDowns: Int!
+    rushingFirstDownsPercentage: Float!
+    rushing20PlusYardsEach: Int!
+    rushing40PlusYardsEach: Int!
+    rushingFumbles: Int!
+}
+
+type LongestRush {
+    value: Int!
+    isTouchdown: Boolean!
+}
+
+directive @goField(forceResolver: Boolean, name: String) on INPUT_FIELD_DEFINITION
+    | FIELD_DEFINITION
