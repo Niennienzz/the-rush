@@ -22,6 +22,8 @@ The backend should be **stopped properly** using:
 zsh> docker-compose down
 ```
 
+Note that the project does not use Docker volumes, **data does not persist on disk after** `docker-compose down`.
+
 ### Backend - Run Manually
 
 If Docker is not available, the backend can also be started manually with the following steps.
@@ -108,9 +110,9 @@ query PlayersWithArgs($args: PlayersArgs!) {
 - Simply passing the GraphQL query down to Dgraph can do the work.
 - In this project, Redis is used. Here are some tradeoffs using Redis:
   - Redis is blazingly fast since it is an in-memory rich-data-type key-value store.
-  - Since operations of Redis are in-memory, queries can return in a few milliseconds.
+  - Since Redis operations does not require disk access, queries can return in a few milliseconds.
   - Redis is schemaless. We need to manage the data model and indexes ourselves.
-  - The project does not use Docker volumes, data does not persist on disk after `docker-compose down`.
+  - Redis does not support full SQL, rich SQL operations cannot be achieved.
 - Due to those tradeoffs above, in this project:
   - Each record has 1 primary index `id`, stored in Redis as a `Hash` with the format `id -> JSON(record)`.
   - Each record has 4 secondary indexes `createdAt`, `totalRushingTouchdowns`, `totalRushingYards`, and `longestRush`.
