@@ -2,8 +2,11 @@ package graph
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
+	"sort"
+	"the-rush/constant"
 	"the-rush/graph/model"
 	"the-rush/graph/runtime"
 )
@@ -37,6 +40,47 @@ func (r *queryResolver) Players(ctx context.Context, args model.PlayersArgs) (*m
 		return new(model.PlayersResponse), nil
 	}
 	return resp, nil
+}
+
+func (r *queryResolver) TotalYardsByTeam(ctx context.Context, order model.Order) ([]*model.TotalYardsByTeamResponse, error) {
+	log.Println("queryResolver.TotalYardsByTeam")
+	playersMap, err := r.repo.HGetAll(ctx, constant.RedisKeyPlayerRecords.String()).Result()
+	if err != nil {
+		return nil, err
+	}
+
+	players := make([]model.Player, 0)
+	for _, v := range playersMap {
+		player := new(model.Player)
+		err = json.Unmarshal([]byte(v), player)
+		if err != nil {
+			return nil, err
+		}
+		players = append(players, *player)
+	}
+
+	totalYardsByTeam := make(map[string]int)
+	for _, v := range players {
+		totalYardsByTeam[v.Team] += v.TotalRushingYards
+	}
+
+	resp := make([]*model.TotalYardsByTeamResponse, 0)
+	for k, v := range totalYardsByTeam {
+		r := &model.TotalYardsByTeamResponse{
+			Team:       k,
+			TotalYards: v,
+		}
+		resp = append(resp, r)
+	}
+
+	sortable := model.SortableTotalYardsByTeamResponse(resp)
+	if order == model.OrderAsc {
+		sort.Sort(sortable)
+	} else {
+		sort.Sort(sort.Reverse(sortable))
+	}
+
+	return sortable, nil
 }
 
 // Mutation returns runtime.MutationResolver implementation.

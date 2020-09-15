@@ -6,6 +6,7 @@ schema {
 type Query {
     player(id: ID!): Player
     players(args: PlayersArgs!): PlayersResponse!
+    totalYardsByTeam(order: Order!): [TotalYardsByTeamResponse!]!
 }
 
 type Mutation {
@@ -127,3 +128,8 @@ type LongestRush {
 
 directive @goField(forceResolver: Boolean, name: String) on INPUT_FIELD_DEFINITION
     | FIELD_DEFINITION
+
+type TotalYardsByTeamResponse {
+    team: String!
+    totalYards: Int!
+}

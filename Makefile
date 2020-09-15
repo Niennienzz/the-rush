@@ -10,5 +10,8 @@ gen: clean
 ingest: vendor
 	go run cmd/ingestion/main.go
 
+dev: vendor
+	go run cmd/server/main.go
+
 run: ingest
 	go run cmd/server/main.go

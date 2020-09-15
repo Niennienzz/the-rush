@@ -36,6 +36,11 @@ type PlayersResponse struct {
 	Limit   int       `json:"limit"`
 }
 
+type TotalYardsByTeamResponse struct {
+	Team       string `json:"team"`
+	TotalYards int    `json:"totalYards"`
+}
+
 type Order string
 
 const (

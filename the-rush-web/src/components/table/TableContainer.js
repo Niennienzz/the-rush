@@ -68,7 +68,7 @@ const TableData = () => {
         }, {
             id: 'longestRush',
             Header: 'Longest Rush Is Touchdown',
-            accessor: row => { return row.longestRush.isTouchdown ? 'Yes' : 'No' },
+            accessor: row => { return row.longestRush.value + (row.longestRush.isTouchdown ? 'T' : '') },
         }, {
             Header: 'Team',
             accessor: 'team',
